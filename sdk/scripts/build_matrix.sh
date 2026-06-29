@@ -73,18 +73,18 @@ if [ ! -d "$SRC_PKG" ]; then
     exit 1
 fi
 
-mkdir -p "$TMPDIR"
-cp -r "$SRC_PKG"/* "$TMPDIR/"
-# Remove __pycache__ from the copy
-find "$TMPDIR" -name '__pycache__' -type d -exec rm -rf {} + 2>/dev/null || true
-echo "  [COPY] Source copied to $TMPDIR"
+	mkdir -p "$TMPDIR/correctover"
+	cp -r "$SRC_PKG"/* "$TMPDIR/correctover/"
+	# Remove __pycache__ from the copy
+	find "$TMPDIR/correctover" -name '__pycache__' -type d -exec rm -rf {} + 2>/dev/null || true
+	echo "  [COPY] Source copied to $TMPDIR/correctover"
 
 # ── Step 2: Override correctover-specific files ────────────────────
 echo ""
 echo "[2/5] Overriding version and patches..."
 
 # _version.py with build version
-cat > "$TMPDIR/_version.py" << EOF
+cat > "$TMPDIR/correctover/_version.py" << EOF
 # Copyright 2024-2026 Correctover Team
 # Proprietary Commercial License
 """Version info for Correctover SDK."""
@@ -103,7 +103,7 @@ echo "[3/5] Compiling .py -> .pyc with Python $PY_VER..."
 COMPILE_OK=$("$PYTHON" -c "
 import os, py_compile, sys
 
-pkg = r'$TMPDIR'.replace('\\\\', '/')
+pkg = r'$TMPDIR/correctover'.replace('\\\\', '/')
 ok = fail = 0
 for root, dirs, files in os.walk(pkg):
     for f in files:
@@ -125,7 +125,7 @@ if fail:
 echo "  $COMPILE_OK"
 
 # Move .pyc from __pycache__
-find "$TMPDIR" -name '__pycache__' -type d | while read -r pc; do
+find "$TMPDIR/correctover" -name '__pycache__' -type d | while read -r pc; do
     parent="$(dirname "$pc")"
     for f in "$pc"/*.pyc; do
         [ -f "$f" ] || continue
@@ -139,7 +139,7 @@ echo "  [OK]  .pyc files moved from __pycache__"
 # ── Step 4: Strip paths from .pyc ────────────────────────────────────
 echo ""
 echo "[4/5] Stripping absolute paths from .pyc..."
-export CORRECTOVER_BUILD_TMPDIR="$TMPDIR"
+export CORRECTOVER_BUILD_TMPDIR="$TMPDIR/correctover"
 "$PYTHON" << 'PYEOF'
 import os, marshal, struct
 
