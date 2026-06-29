@@ -391,7 +391,7 @@ class Diagnoser:
 
     def suggest_recovery(self, diagnosis, provider=None, model=None):
         """Suggest recovery action based on diagnosis category."""
-        from correctover.types import RecoveryLevel
+        from correctover._types import RecoveryLevel
 
         cat = diagnosis.category.value if hasattr(diagnosis.category, 'value') else str(diagnosis.category)
 
