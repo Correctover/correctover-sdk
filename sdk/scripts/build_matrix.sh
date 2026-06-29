@@ -25,7 +25,7 @@ if [ -z "$PY_VER" ]; then
 fi
 
 # ── Paths ────────────────────────────────────────────────────────────
-HERE="$(cd "$(dirname "$0")/.." && pwd -W 2>/dev/null || cd "$(dirname "$0")/.." && pwd)"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SRC_PKG="$HERE/correctover"                # canonical correctover source
 TMPDIR="${TMPDIR:-/tmp}/correctover-build-$(date +%s)-$$"
 DIST_DIR="$HERE/dist"
@@ -193,9 +193,8 @@ PYEOF
 
 # ── Step 5: Build wheel ─────────────────────────────────────────────
 echo ""
-echo "[5/5] Building wheel..."
-find "$TMPDIR" -name '*.py' -not -name '__init__.py' -delete
-echo "  [OK]  Source .py files removed (keeping __init__.py)"
+echo "[5/5] Building wheel (keeping .py + .pyc for cross-version compat)..."
+echo "  [OK]  Keeping .py sources alongside .pyc for cross-runtime compatibility"
 
 cat > "$TMPDIR/pyproject.toml" << EOF
 [build-system]

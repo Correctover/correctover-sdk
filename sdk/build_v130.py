@@ -123,15 +123,13 @@ for root, dirs, files in os.walk(TMP_PKG):
         with open(fpath, "wb") as fh:
             fh.write(data[:16] + marshal.dumps(code))
 
-# Step 4: Remove source .py (keep __init__.py)
+# Step 4: Keep .py + .pyc for cross-version compatibility
 print()
-print("[4/5] Removing .py source (keeping __init__.py)...")
-for root, dirs, files in os.walk(TMP_PKG):
-    for f in files:
-        if f.endswith(".py") and f != "__init__.py":
-            os.remove(os.path.join(root, f))
+print("[4/5] Keeping .py + .pyc for cross-version compatibility...")
 pyc_count = sum(1 for _, _, fs in os.walk(TMP_PKG) for f in fs if f.endswith(".pyc"))
-print(f"  [OK]  {pyc_count} compiled .pyc files")
+py_count = sum(1 for _, _, fs in os.walk(TMP_PKG) for f in fs if f.endswith(".py"))
+print(f"  [OK]  {pyc_count} compiled .pyc files, {py_count} source .py files")
+print("  [INFO] Keeping .py sources so non-3.12 runtimes can compile at install time")
 
 # Step 5: Build wheel
 print()

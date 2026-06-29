@@ -153,15 +153,12 @@ def compile_all():
 
 
 def finalize():
-    print("\n[4/5] Finalizing package (removing .py, keeping __init__.py)...")
-    for root, dirs, files in os.walk(TMP_PKG):
-        for f in files:
-            if f.endswith(".py") and f != "__init__.py":
-                os.remove(os.path.join(root, f))
-
+    print("\n[4/5] Finalizing package (keeping .py + .pyc for cross-version compat)...")
     pyc_count = sum(1 for _, _, fs in os.walk(TMP_PKG) for f in fs if f.endswith(".pyc"))
+    py_count = sum(1 for _, _, fs in os.walk(TMP_PKG) for f in fs if f.endswith(".py"))
     init_exists = os.path.exists(os.path.join(TMP_PKG, "__init__.py"))
-    print(f"  [OK]  {pyc_count} compiled modules, __init__.py present: {init_exists}")
+    print(f"  [OK]  {pyc_count} compiled modules, {py_count} source files, __init__.py: {init_exists}")
+    print("  [INFO] Keeping .py sources alongside .pyc so non-3.12 runtimes can compile at install time")
 
 
 def build_wheel():
