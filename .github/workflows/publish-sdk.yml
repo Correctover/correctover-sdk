@@ -24,7 +24,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: pip install build wheel setuptools
+        run: pip install build wheel "setuptools<77"
 
       - name: Derive version
         id: version

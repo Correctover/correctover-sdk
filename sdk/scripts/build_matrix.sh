@@ -198,7 +198,7 @@ echo "  [OK]  Keeping .py sources alongside .pyc for cross-runtime compatibility
 
 cat > "$TMPDIR/pyproject.toml" << EOF
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=64,<77"]
 build-backend = "setuptools.build_meta"
 
 [project]
