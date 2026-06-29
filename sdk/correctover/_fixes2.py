@@ -83,7 +83,7 @@ def _patch_5xx_short_circuit(engine_module):
     # ── patch _pick_provider to honour short-circuit ────────────
     _orig_pick = SelfHealingEngine._pick_provider
 
-    def _patched_pick(self, candidates):
+    def _patched_pick(self, model, candidates):
         """Filter out short-circuited providers from candidate list."""
         now = _time.time()
         filtered = []
@@ -96,7 +96,7 @@ def _patch_5xx_short_circuit(engine_module):
         if not filtered:
             filtered = candidates
             _logger.warning("All providers short-circuited, forcing fallback")
-        return _orig_pick(self, filtered)
+        return _orig_pick(self, model, filtered)
 
     SelfHealingEngine._pick_provider = _patched_pick
 
