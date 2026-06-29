@@ -138,7 +138,7 @@ if os.path.exists(DIST_DIR):
     shutil.rmtree(DIST_DIR)
 
 pyproject = f"""[build-system]
-requires = ["setuptools>=64,<75"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]

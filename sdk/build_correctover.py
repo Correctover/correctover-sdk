@@ -168,7 +168,7 @@ def build_wheel():
 
     # Create build config files
     project = f"""[build-system]
-requires = ["setuptools>=64,<75"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
