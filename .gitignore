@@ -70,3 +70,4 @@ vscode-extension/master_key.hex
 *.output.json
 bash.exe.stackdump
 build/
+_tools/
