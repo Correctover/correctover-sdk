@@ -287,7 +287,7 @@ class Diagnoser:
 
     def suggest_recovery(self, diagnosis, provider=None, model=None):
         """Suggest recovery action based on diagnosis category."""
-        from .types import RecoveryLevel
+        from ._types import RecoveryLevel
 
         cat = diagnosis.category.value if hasattr(diagnosis.category, 'value') else str(diagnosis.category)
 
@@ -1488,7 +1488,7 @@ _DOWNGRADE_CHAIN: Dict[str, List[str]] = {
     "google": ["gemini-1.5-pro", "gemini-2.0-flash", "gemini-1.5-flash"],
 }
 
-_PROVIDER_TIMEOUT = 8.0
+_PROVIDER_TIMEOUT = 30.0
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
